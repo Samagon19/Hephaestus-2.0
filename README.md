@@ -22,6 +22,8 @@ Notes:
     - You also have to make sure that you have **less than 5** Heroku apps as that is the limit.
     > If deploying to Heroku doesn't take a while (if it's quick), then you probably messed up there.
 
+- If you're having problems, you can also try the `10. Clear cache` task to start completely fresh.
+
 
 ## Features
 - Clean, simple and easy to use menu.
