@@ -131,7 +131,7 @@ public class Tasks {
             Git.open(new File(path + "\\server")).add().addFilepattern(".").call();
             Git.open(new File(path + "\\server")).commit().setMessage("Hephaestus Autocommit").call();
 //            Git.open(new File(path + "\\server")).push().setRemote("heroku").call(); //TODO: find out why this doesn't work but the one below does
-            Process p = Runtime.getRuntime().exec("git push heroku master", null, new File(path + "\\server"));
+            Process p = Runtime.getRuntime().exec("git push heroku " + Git.open(new File(path + "\\server")).getRepository().getBranch(), null, new File(path + "\\server"));
             p.waitFor();
 
             log("Heroku app deployed successfully. [5/9]");
@@ -210,9 +210,9 @@ public class Tasks {
 
             FileUtils.forceDelete(path);
 
-            log("Daemons cleared successfully. [10/10]");
+            log("Daemons killed successfully. [10/10]");
         } catch (Exception e) {
-            log("Error while clearing cache. [10/10]");
+            log("Error while killing daemons. [10/10]");
             e.printStackTrace();
             System.exit(-10);
         }
