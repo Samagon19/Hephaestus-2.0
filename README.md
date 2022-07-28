@@ -14,10 +14,19 @@
 </div>
 
 ## [Demo](https://youtu.be/R-F2dygIOZg)
+Notes:
+- You can find the built mod in `%AppData%/Hephaestus/build/libs/`
+
+- Heroku error handling isn't done yet. What this means is:
+    - When entering a name for the Heroku app, make sure it is something that **shouldn't already exist**. It does not check for it, but will throw an error farther down the line.
+    - You also have to make sure that you have **less than 5** Heroku apps as that is the limit.
+    > If deploying to Heroku doesn't take a while (if it's quick), then you probably messed up there.
+
 
 ## Features
 - Clean, simple and easy to use menu.
 - Synchronous command execution.
+- Always up-to-date R.A.T (pulls from Git repository).
 - Partial error handling (external processes).
 - Uses:
     - *JGit* for Git commands.
@@ -26,7 +35,6 @@
 ## Pre-requirements
 - [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) (after you install login yourself using `heroku login`)
 - [Git](https://git-scm.com/)
-
 
 ## Download
 Setup and build yourself.
