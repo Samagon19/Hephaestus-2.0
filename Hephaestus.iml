@@ -14,7 +14,17 @@
     <orderEntry type="library" name="Maven: org.eclipse.jgit:org.eclipse.jgit:5.13.1.202206130422-r" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.javaewah:JavaEWAH:1.1.13" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
-    <orderEntry type="library" name="Maven: org.gradle:gradle-tooling-api:7.3-20210825160000+0000" level="project" />
+    <orderEntry type="library" name="Maven: com.heroku.api:heroku-api:0.45" level="project" />
+    <orderEntry type="library" name="Maven: com.heroku.api:heroku-json-jackson:0.45" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.10.6" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.10" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.10" level="project" />
+    <orderEntry type="library" name="Maven: com.heroku.api:heroku-http-apache:0.45" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpclient:4.5.7" level="project" />
+    <orderEntry type="library" name="Maven: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpcore:4.4.11" level="project" />
+    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.13" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.11.0" level="project" />
+    <orderEntry type="library" name="Maven: net.lingala.zip4j:zip4j:2.11.1" level="project" />
   </component>
 </module>
