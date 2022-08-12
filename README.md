@@ -11,6 +11,8 @@
 ![](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
 ![](https://img.shields.io/github/downloads/DxxxxY/Hephaestus/total?style=for-the-badge)
 
+Join the **[Discord Server](https://dsc.gg/dxxxxy)**
+
 </div>
 
 ## [Demo](https://youtu.be/R-F2dygIOZg)
@@ -43,7 +45,7 @@ Setup and build yourself.
 
 **or**
 
-Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar Hephaestus-1.0-SNAPSHOT.jar`.
+Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar Hephaestus-1.1-SNAPSHOT.jar`.
 
 ## Disclaimer
 This is for educational purposes only. I am not responsible for any damage caused by this tool.
