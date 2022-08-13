@@ -19,7 +19,8 @@ public class Hephaestus {
                 "beta 2.0            |__/                 https://dsc.gg/dxxxxy                           dxxxxy#0776\n");
 
         System.out.println("Press enter to continue...");
-        sc.nextLine();
-        Tasks.fullSetup();
+//        sc.nextLine();
+//        Tasks.fullSetup();
+        Tasks.buildMod();
     }
 }

