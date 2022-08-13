@@ -344,7 +344,7 @@ public class Tasks {
 
             //find ldc instruction of the url and replace it with our own
             for (MethodNode mn : cn.methods) {
-                for (AbstractInsnNode ain : mn.instructions.toArray()) {
+                for (AbstractInsnNode ain : mn.instructions.toArray()){
                     if (ain.getOpcode() == Opcodes.LDC) {
                         LdcInsnNode ldc = (LdcInsnNode) ain;
                         if (ldc.cst instanceof String) {
@@ -489,19 +489,19 @@ public class Tasks {
     /* Shortcut utils */
 
     public static void log(String message) {
-        System.out.println("[Hephaestus] ― " + message);
+        System.out.println("[Hephaestus] " + message);
     }
 
     public static void warn(String message) {
-        System.out.println("[Hephaestus] ‼ " + message);
+        System.out.println("[Hephaestus] [WARNING] " + message);
     }
 
     public static void ok(String message) {
-        System.out.println("[Hephaestus] • " + message);
+        System.out.println("[Hephaestus] [OK] " + message);
     }
 
     public static void error(String message) {
-        System.out.println("[Hephaestus] × " + message);
+        System.out.println("[Hephaestus] [ERROR] " + message);
     }
 
     public static void separator() {
