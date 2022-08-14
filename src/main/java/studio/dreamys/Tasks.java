@@ -3,8 +3,11 @@ package studio.dreamys;
 import com.heroku.api.App;
 import com.heroku.api.HerokuAPI;
 import jdk.internal.org.objectweb.asm.ClassReader;
+import jdk.internal.org.objectweb.asm.ClassVisitor;
 import jdk.internal.org.objectweb.asm.ClassWriter;
 import jdk.internal.org.objectweb.asm.Opcodes;
+import jdk.internal.org.objectweb.asm.commons.Remapper;
+import jdk.internal.org.objectweb.asm.commons.RemappingClassAdapter;
 import jdk.internal.org.objectweb.asm.tree.AbstractInsnNode;
 import jdk.internal.org.objectweb.asm.tree.ClassNode;
 import jdk.internal.org.objectweb.asm.tree.LdcInsnNode;
@@ -383,12 +386,21 @@ public class Tasks {
                 log("Please enter the full name of the class: (eg: studio.dreamys.Rat)");
                 String className = sc.nextLine();
                 className = className.replace(".", "/");
-                cn.name = className;
+
+                String finalClassName = className;
+                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
+                ClassVisitor cv = new RemappingClassAdapter(cw, new Remapper() {
+                    @Override
+                    public String map(String from) {
+                        if (from.equals("studio/dreamys/Rat")) {
+                            return finalClassName;
+                        }
+                        return from;
+                    }
+                });
 
                 //write changes
-                ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
-                cn.accept(cw);
-
+                cn.accept(cv);
                 saveAsJar(cw.toByteArray(), jar, className);
             } else {
                 //compile class to jar
