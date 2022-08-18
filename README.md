@@ -15,37 +15,29 @@ Join the **[Discord Server](https://dsc.gg/dxxxxy)** for support and pre-release
 
 </div>
 
-## [Demo](https://youtu.be/R-F2dygIOZg)
-Notes:
-- You can find the built mod in `%AppData%/Hephaestus/build/libs/`
-
-- Heroku error handling isn't done yet. What this means is:
-    - When entering a name for the Heroku app, make sure it is something that **shouldn't already exist**. It does not check for it, but will throw an error farther down the line.
-    - You also have to make sure that you have **less than 5** Heroku apps as that is the limit.
-    > If deploying to Heroku doesn't take a while (if it's quick), then you probably messed up there.
-
-- If you're having problems, you can also try the `10. Clear cache` task to start completely fresh.
-
+## [Outdated Demo](https://youtu.be/R-F2dygIOZg)
 
 ## Features
-- Clean, simple and easy to use menu.
-- Synchronous command execution.
+- Files can be found in `%AppData%/Hephaestus/`.
+- Clean, simple and easy to use command line.
+- Synchronous task execution.
+- No pre-requirements needed.
+- Uses bytecode manipulation to edit and compile classes.
+- Installs own jdk if yours is incompatible.
+- Doesn't use gradle.
+- Has lots of options/versatility.
 - Always up-to-date R.A.T (pulls from Git repository).
-- Partial error handling (external processes).
+- Fully covered error handling.
 - Uses:
-    - *JGit* for Git commands.
-    - *Gradle Tooling API* for Gradle controls.
-
-## Pre-requirements
-- [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli) (after you install login yourself using `heroku login`)
-- [Git](https://git-scm.com/)
+    - *JGit* for Git controls.
+    - *heroku.jar* for Heroku controls.
 
 ## Download
 Setup and build yourself.
 
 **or**
 
-Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar Hephaestus-1.1-SNAPSHOT.jar`.
+Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar <file name>.jar`.
 
 ## Disclaimer
 This is for educational purposes only. I am not responsible for any damage caused by this tool.
