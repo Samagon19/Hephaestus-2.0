@@ -16,6 +16,7 @@ Join the **[Discord Server](https://dsc.gg/dxxxxy)** for support and pre-release
 </div>
 
 ## [Outdated Demo](https://youtu.be/R-F2dygIOZg)
+## [2.0 Trailer](https://youtu.be/z8CRQEXjcKQ)
 
 ## Features
 - Files can be found in `%AppData%/Hephaestus/`.
