@@ -85,6 +85,24 @@ public class Tasks {
         separator(); //last separator
     }
 
+    public static void modOnly() {
+        separator();
+        getHerokuAPIKey();
+        separator();
+        log("Please choose a heroku app to build mod to: ");
+        herokuAPI.listApps().forEach(app -> System.out.println(app.getName()));
+        appName = sc.nextLine();
+        while (!herokuAPI.appExists(appName)) {
+            log("App does not exist. Please retry: ");
+            appName = sc.nextLine();
+        }
+        separator();
+        downloadRatClass();
+        separator();
+        buildMod();
+        separator();
+    }
+
     /* Setup */
 
     public static void setupJavaJDK() {
@@ -155,8 +173,8 @@ public class Tasks {
         try {
             if (new File(path + "\\herokuapikey.hephaestus").createNewFile()) {
                 setHerokuAPIKey();
+                return;
             }
-
             log("Checking Heroku API key...");
             String key = FileUtils.readFileToString(new File(path + "\\herokuapikey.hephaestus"), StandardCharsets.UTF_8);
             herokuAPI = new HerokuAPI(key);
@@ -218,8 +236,8 @@ public class Tasks {
             Matcher m = Pattern.compile("https:\\/\\/git\\.heroku\\.com\\/(.*).git").matcher(nullable(git.getRepository().getConfig().getString("remote", "heroku", "url")));
             if (m.find()) {
                 appName = m.group(1);
-                log("Found old git repository remote: " + m.group(1));
-                log("Do you want to delete it? [y/n]");
+                log("Found old git heroku remote: " + m.group(1));
+                log("Do you want to delete it and create a new app? [y/n]");
                 String answer = sc.nextLine();
                 if (answer.equals("y")) {
                     log("Deleting old git remote...");

