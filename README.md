@@ -41,6 +41,8 @@ Setup and build yourself.
 Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar <file name>.jar`.
 
 ## Help
+Crashes on start? Normal, use Java JDK 8.
+
 Not sure what to enter as data? Visit the [DataDoc](DATADOC.md).
 
 ## Disclaimer
