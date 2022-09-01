@@ -40,6 +40,9 @@ Setup and build yourself.
 
 Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar <file name>.jar`.
 
+## Help
+Not sure what to enter as data? Visit the [DataDoc](DATADOC.md).
+
 ## Disclaimer
 This is for educational purposes only. I am not responsible for any damage caused by this tool.
 
