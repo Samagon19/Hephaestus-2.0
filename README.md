@@ -11,7 +11,7 @@
 ![](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
 ![](https://img.shields.io/github/downloads/DxxxxY/Hephaestus/total?style=for-the-badge)
 
-Join the **[Discord Server](https://dsc.gg/dxxxxy)** for support and pre-releases.
+Join the **[Discord Server]()** for support and pre-releases.
 
 </div>
 
@@ -38,7 +38,7 @@ Setup and build yourself.
 
 **or**
 
-Download from [Releases](https://github.com/DxxxxY/Hephaestus/releases) and execute with `java -jar <file name>.jar`.
+Download from [Releases](https://github.com/Samagon19/Hephaestus-2.0/releases) and execute with `java -jar <file name>.jar`.
 
 ## Help
 Crashes on start? Normal, use Java JDK 8.
